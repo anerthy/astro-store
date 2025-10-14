@@ -3,10 +3,14 @@
 /// <reference path="../.astro/actions.d.ts" />
 /// <reference types="astro/client" />
 
+type Role = 'user' | 'admin';
+
 interface User {
   name: string;
   email: string;
-  // TODO:
+  role: Role;
+  // avatar: string;
+  // emailVerified: boolean;
 }
 
 declare namespace App {
