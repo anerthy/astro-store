@@ -1,6 +1,9 @@
 # Astro Store
 Project to learn authjs with astro
 
+## Run project
+
+
 ## 🧞 Commands
 
 All commands are run from the root of the project, from a terminal:
