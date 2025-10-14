@@ -3,6 +3,7 @@ import Credentials from '@auth/core/providers/credentials';
 import { db, eq, User } from 'astro:db';
 import { defineConfig } from 'auth-astro';
 import bcrypt from 'bcryptjs';
+import type Credentials from '@auth/core/providers/credentials';
 
 export default defineConfig({
   providers: [
@@ -15,7 +16,9 @@ export default defineConfig({
         email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password'},
       },
-      authorize: async ({ email, password }) => {
+      authorize: async (credentials) => {
+        
+        const { email, password } = credentials;
         
         const [user] = await db
           .select()
@@ -28,9 +31,10 @@ export default defineConfig({
           throw new Error('Invalid password');
         }
 
-        const { password: _password, ...userWithoutPassword } = user;
-
-        return { userWithoutPassword };
+        const { password: _, ...rest } = user;
+        console.log({ rest });
+        
+        return rest;
     },
     }),
   ],

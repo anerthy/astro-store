@@ -1,5 +1,6 @@
 import { defineMiddleware } from 'astro:middleware';
 
+
 const notAuthenticatedRoutes = ['/login', '/register'];
 
 export const onRequest = defineMiddleware(
