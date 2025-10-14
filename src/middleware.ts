@@ -1,4 +1,5 @@
 import { defineMiddleware } from 'astro:middleware';
+import type { Role } from 'auth';
 import { getSession } from 'auth-astro/server';
 
 
@@ -14,14 +15,19 @@ export const onRequest = defineMiddleware(
 
     // TODO:
     locals.isLoggedIn = isLoggedIn;
-    locals.user = null;
+    locals.user       = null;
+    locals.isAdmin    = false;
 
     if (user) {
       // TODO:
       locals.user = {
         name: user.name!,
         email: user.email!,
+        role: user.role as Role ?? 'user',
       };
+
+      locals.isAdmin = user.role === 'admin';
+
     }
 
     // TODO: Eventualmente tenemos que controlar el acceso por roles

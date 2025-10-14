@@ -3,9 +3,12 @@
 /// <reference path="../.astro/actions.d.ts" />
 /// <reference types="astro/client" />
 
+type Role = 'user' | 'admin';
+
 interface User {
   name: string;
   email: string;
+  role: Role;
   // avatar: string;
   // emailVerified: boolean;
 }

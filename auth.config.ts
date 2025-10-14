@@ -3,7 +3,7 @@ import Credentials from '@auth/core/providers/credentials';
 import { db, eq, User } from 'astro:db';
 import { defineConfig } from 'auth-astro';
 import bcrypt from 'bcryptjs';
-import type Credentials from '@auth/core/providers/credentials';
+import type { AdapterUser } from '@auth/core/adapters';
 
 export default defineConfig({
   providers: [
@@ -16,7 +16,7 @@ export default defineConfig({
         email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password'},
       },
-      authorize: async (credentials) => {
+      authorize: async (credentials) : Promise<any | null> => {
         
         const { email, password } = credentials;
         
@@ -32,10 +32,24 @@ export default defineConfig({
         }
 
         const { password: _, ...rest } = user;
-        console.log({ rest });
         
         return rest;
     },
     }),
   ],
+  callbacks:{
+    jwt: ({ token, user }) => {
+      
+      if (user) {
+        token.user = user;
+      }
+      
+      return token;
+    },
+    session: ({ session, token }) => {
+      
+      session.user = token.user as AdapterUser;
+      return session;
+    }
+  }
 });
