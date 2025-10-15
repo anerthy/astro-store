@@ -1,8 +1,5 @@
 # Astro Store
-Project to learn authjs with astro
-
-## Run project
-
+Mini proyecto de tienda de productos con carrito de compras para apreder a integrar authjs en astro
 
 ## 🧞 Commands
 
