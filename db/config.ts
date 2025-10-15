@@ -5,28 +5,54 @@ const User = defineTable({
     id: column.text({ primaryKey: true, unique: true }),
     name: column.text(),
     email: column.text({ unique: true }),
-    password : column.text(),
+    password: column.text(),
     createdAt: column.date({ default: new Date() }),
     // updatedAt: column.date({ default: new Date(), onUpdate: new Date() })
-    role: column.text({ 
-      references: () => Role.columns.id, 
-      default: 'user' 
-    }) // 'user' or 'admin'
-  }
+    role: column.text({
+      references: () => Role.columns.id,
+      default: 'user',
+    }), // 'user' or 'admin'
+  },
 });
-
 
 const Role = defineTable({
   columns: {
     id: column.text({ primaryKey: true, unique: true }),
-    name: column.text({ unique: true })
-  }
+    name: column.text({ unique: true }),
+  },
+});
+
+const Product = defineTable({
+  columns: {
+    id: column.text({ primaryKey: true, unique: true }),
+    description: column.text(),
+    gender: column.text(),
+    // images: column.text(),
+    price: column.number(),
+    sizes: column.text(),
+    slug: column.text({ unique: true }),
+    stock: column.number(),
+    tags: column.text(),
+    title: column.text(),
+    type: column.text(),
+    user: column.text({ references: () => User.columns.id }),
+  },
+});
+
+const ProductImage = defineTable({
+  columns: {
+    id: column.text({ primaryKey: true, unique: true }),
+    productId: column.text({ references: () => Product.columns.id }),
+    image: column.text(),
+  },
 });
 
 // https://astro.build/db/config
 export default defineDb({
   tables: {
     User,
-    Role
-  }
+    Role,
+    Product,
+    ProductImage,
+  },
 });
