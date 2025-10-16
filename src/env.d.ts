@@ -25,6 +25,8 @@ interface ImportMetaEnv {
   readonly AUTH_TRUST_HOST: 'true' | 'false';
   readonly AUTH_SECRET: string;
   readonly PUBLIC_URL: string;
+  readonly PUBLIC_SITE_NAME: string;
+  readonly PUBLIC_SITE_DESCRIPTION: string;
   // more env variables...
 }
 interface ImportMeta {
