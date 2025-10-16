@@ -48,7 +48,6 @@ export const getProductsByPage = defineAction({
     `;
 
     const { rows: products } = await db.run(productsQuery);
-    console.log(products);
 
     return {
       products: products as unknown as ProductWithImages[],
