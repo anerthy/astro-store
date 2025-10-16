@@ -11,7 +11,6 @@ export const ProductCard = ({ product }: Props) => {
       ? img
       : `${import.meta.env.PUBLIC_URL}/images/products/${img}`;
   });
-  console.log(images);
 
   const [currentImage, setCurrentImage] = useState(images[0]);
 
