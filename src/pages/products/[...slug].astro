@@ -29,7 +29,7 @@ const image = images[0].image;
       <h2 class="text-2xl font-bold">{product.title}</h2>
       <h2 class="font-bold">${product.price}</h2>
 
-      <h3 class="mt-5">Tallas</h3>
+      <h3 class="mt-5">Sizes</h3>
       <ul class="flex gap-3">
         {
           product.sizes
@@ -38,24 +38,75 @@ const image = images[0].image;
         }
       </ul>
 
-      <h3 class="mt-5">Cantidad</h3>
+      <h3 class="mt-5">Quantity</h3>
       <div>
         <button class="btn-quantity">-</button>
         <input type="number" min="1" value="1" />
         <button class="btn-quantity">+</button>
       </div>
 
-      <button class="mt-5 bg-blue-500 text-white p-3 w-full"
-        >Añadir al carrito</button
+      <button
+        class="mt-5 bg-blue-500 text-white p-3 w-full disabled:bg-gray-400"
+        >Add to Cart</button
       >
 
-      <h3 class="mt-10">Descripción</h3>
+      <h3 class="mt-10">Description</h3>
       <p>{product.description}</p>
     </section>
   </div>
 
   <input type="hidden" id="product-id" value={product.id} />
 </MainLayout>
+
+<script>
+  const sizeElements = document.querySelectorAll(
+    'li[data-size]'
+  ) as NodeListOf<HTMLLIElement>;
+
+  sizeElements.forEach((liElement) => {
+    liElement.addEventListener('click', () => {
+      sizeElements.forEach((s) => s.classList.remove('selected-size'));
+      liElement.classList.add('selected-size');
+    });
+  });
+
+  const quantityInput = document.querySelector('input') as HTMLInputElement;
+  const productIdInput = document.querySelector(
+    '#product-id'
+  ) as HTMLInputElement;
+
+  let quantity = 1;
+
+  const [decrementButton, incrementButton, addToCartButton] =
+    document.querySelectorAll('button');
+
+  decrementButton.addEventListener('click', () => {
+    quantity = Math.max(quantity - 1, 1);
+    quantityInput.value = quantity.toString();
+  });
+
+  incrementButton.addEventListener('click', () => {
+    quantity = Math.min(quantity + 1, 5);
+    quantityInput.value = quantity.toString();
+  });
+
+  addToCartButton.addEventListener('click', () => {
+    const size = document.querySelector('.selected-size')?.textContent;
+    if (!size) {
+      alert('Por favor, selecciona una talla.');
+      return;
+    }
+
+    addToCartButton.disabled = true;
+
+    const productData = {
+      id: productIdInput.value,
+      size: size,
+      quantity: quantity,
+    };
+    console.log(productData);
+  });
+</script>
 
 <style>
   @reference '@/styles/global.css';
