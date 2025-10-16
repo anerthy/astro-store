@@ -2,30 +2,26 @@
 import MainLayout from '@/layouts/MainLayout.astro';
 import { actions } from 'astro:actions';
 import { getSession } from 'auth-astro/server';
+import { ProductList } from '@/components/products/ProductList';
 
 const session = await getSession(Astro.request);
 const { user } = session ?? {};
 
-const { data: products, error } = await Astro.callAction(
-  actions.getProductsByPage,
-  {
-    page: 1,
-    limit: 10,
-  }
-);
+const { data, error } = await Astro.callAction(actions.getProductsByPage, {
+  page: 1,
+  limit: 10,
+});
 
 if (error) {
   return Astro.redirect('/');
 }
 
-console.log(products);
+const { products, totalPages } = data;
 ---
 
 <MainLayout>
-  <h1 class="text-3xl">Home Page</h1>
-  <pre>
-    <code>
-      {JSON.stringify(user)}
-    </code>
-  </pre>
+  <small class="text-lg">Hi, {user?.name}!</small>
+  <h1 class="text-3xl">Store products</h1>
+  <ProductList products={products} client:idle />
 </MainLayout>
+|
