@@ -20,3 +20,13 @@ declare namespace App {
     user: User | null;
   }
 }
+
+interface ImportMetaEnv {
+  readonly AUTH_TRUST_HOST: 'true' | 'false';
+  readonly AUTH_SECRET: string;
+  readonly PUBLIC_URL: string;
+  // more env variables...
+}
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}
