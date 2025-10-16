@@ -1,9 +1,24 @@
 ---
 import MainLayout from '@/layouts/MainLayout.astro';
+import { actions } from 'astro:actions';
 import { getSession } from 'auth-astro/server';
 
 const session = await getSession(Astro.request);
-const { user } = session ?? {}
+const { user } = session ?? {};
+
+const { data: products, error } = await Astro.callAction(
+  actions.getProductsByPage,
+  {
+    page: 1,
+    limit: 10,
+  }
+);
+
+if (error) {
+  return Astro.redirect('/');
+}
+
+console.log(products);
 ---
 
 <MainLayout>
