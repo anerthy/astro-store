@@ -6,6 +6,9 @@ dist/
 # dependencies
 node_modules/
 
+#mocks
+public/images/products
+
 # logs
 npm-debug.log*
 yarn-debug.log*

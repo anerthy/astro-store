@@ -1,0 +1,34 @@
+---
+interface Props {
+  totalPages: number;
+}
+
+const { totalPages } = Astro.props;
+
+const url = Astro.url;
+const page = Number(url.searchParams.get('page') ?? 1);
+
+const currentPage = Math.max(page > totalPages ? totalPages : page, 1);
+
+const path = url.pathname;
+---
+
+<footer class="flex justify-end my-4 items-center gap-1">
+  <a class="button" href={`${path}?page=${Math.max(currentPage - 1, 1)}`}>
+    &lt;
+  </a>
+  <span>Page {currentPage} of {totalPages}</span>
+  <a
+    class="button"
+    href={`${path}?page=${Math.min(currentPage + 1, totalPages)}`}
+  >
+    &gt;
+  </a>
+</footer>
+
+<style>
+  @reference '@/styles/global.css';
+  .button {
+    @apply p-1 text-black font-bold rounded border border-gray-300;
+  }
+</style>
