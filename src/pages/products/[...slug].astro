@@ -59,6 +59,9 @@ const image = images[0].image;
 </MainLayout>
 
 <script>
+  import type { CartItem } from '@/interfaces/cart-item';
+  import { CartCookiesClient } from '@/utils/cart-cookies';
+
   const sizeElements = document.querySelectorAll(
     'li[data-size]'
   ) as NodeListOf<HTMLLIElement>;
@@ -99,12 +102,14 @@ const image = images[0].image;
 
     addToCartButton.disabled = true;
 
-    const productData = {
-      id: productIdInput.value,
+    CartCookiesClient.addItem({
+      productId: productIdInput.value,
       size: size,
       quantity: quantity,
-    };
-    console.log(productData);
+    });
+
+    // TODO: cambiar luego cuando tengamos los viewtransitions
+    window.location.href = '/cart';
   });
 </script>
 
