@@ -1,4 +1,5 @@
 ---
+import { getUrlProductImage } from '@/utils/get-url-product-image';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
@@ -9,9 +10,7 @@ interface Props {
 const { images } = Astro.props;
 
 const fullImages = images.map((img) => {
-  return img.image.startsWith('http')
-    ? img
-    : `${import.meta.env.PUBLIC_URL}/images/products/${img.image}`;
+  return getUrlProductImage(img.image);
 });
 ---
 
@@ -45,10 +44,12 @@ const fullImages = images.map((img) => {
   import Swiper from 'swiper';
   import { Pagination } from 'swiper/modules';
 
-  const swiper = new Swiper('.swiper', {
-    pagination: {
-      el: '.swiper-pagination',
-    },
-    modules: [Pagination],
+  document.addEventListener('astro:page-load', () => {
+    const swiper = new Swiper('.swiper', {
+      pagination: {
+        el: '.swiper-pagination',
+      },
+      modules: [Pagination],
+    });
   });
 </script>

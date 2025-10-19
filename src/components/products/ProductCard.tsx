@@ -1,4 +1,5 @@
 import type { ProductWithImages } from '@/interfaces/ProductWithImages';
+import { getUrlProductImage } from '@/utils/get-url-product-image';
 import { useState } from 'react';
 
 interface Props {
@@ -7,9 +8,7 @@ interface Props {
 
 export const ProductCard = ({ product }: Props) => {
   const images = product.images.split(',').map((img) => {
-    return img.startsWith('http')
-      ? img
-      : `${import.meta.env.PUBLIC_URL}/images/products/${img}`;
+    return getUrlProductImage(img);
   });
 
   const [currentImage, setCurrentImage] = useState(images[0]);

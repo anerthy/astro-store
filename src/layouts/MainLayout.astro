@@ -1,6 +1,7 @@
 ---
 import '@/styles/global.css';
 import Navbar from '@/components/shared/Navbar.astro';
+import { ClientRouter } from 'astro:transitions';
 
 interface Props {
   title?: string;
@@ -24,6 +25,7 @@ const {
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
     {image && <meta property="og:image" content={image} />}
+    <ClientRouter />
   </head>
   <body>
     <Navbar />
