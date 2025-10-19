@@ -88,26 +88,29 @@ const total = products.reduce(
 </MainLayout>
 
 <script>
+  import { itemsInCart } from '@/store/cart.store';
   import { CartCookiesClient } from '@/utils/cart-cookies';
-  import { actions } from 'astro:actions';
+  import { navigate } from 'astro:transitions/client';
 
-  const deleteButtons = document.querySelectorAll(
-    '.btn-delete'
-  ) as NodeListOf<HTMLButtonElement>;
+  document.addEventListener('astro:page-load', () => {
+    const deleteButtons = document.querySelectorAll(
+      '.btn-delete'
+    ) as NodeListOf<HTMLButtonElement>;
 
-  deleteButtons.forEach((button) => {
-    button.addEventListener('click', async (event) => {
-      const target = event.target as HTMLButtonElement;
+    deleteButtons.forEach((button) => {
+      button.addEventListener('click', async (event) => {
+        const target = event.target as HTMLButtonElement;
 
-      const productId = target.dataset.id;
-      const size = target.dataset.size;
-      console.log({ productId, size });
+        const productId = target.dataset.id;
+        const size = target.dataset.size;
+        console.log({ productId, size });
 
-      if (!productId || !size) return;
+        if (!productId || !size) return;
 
-      CartCookiesClient.removeItem(productId, size);
-      // TODO: temporal
-      window.location.reload();
+        const cart = CartCookiesClient.removeItem(productId, size);
+        itemsInCart.set(cart.length);
+        navigate('/cart');
+      });
     });
   });
 </script>
