@@ -19,6 +19,7 @@
     "astro": "^5.14.4",
     "auth-astro": "^4.2.0",
     "bcryptjs": "^3.0.2",
+    "js-cookie": "^3.0.5",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "sweetalert2": "^11.26.2",
@@ -27,6 +28,7 @@
     "uuid": "^13.0.0"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.6",
     "@types/uuid": "^10.0.0"
   }
 }
