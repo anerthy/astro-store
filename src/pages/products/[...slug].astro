@@ -60,6 +60,7 @@ const image = images[0].image;
 
 <script>
   import type { CartItem } from '@/interfaces/cart-item';
+  import { itemsInCart } from '@/store/cart.store';
   import { CartCookiesClient } from '@/utils/cart-cookies';
 
   const sizeElements = document.querySelectorAll(
@@ -100,16 +101,19 @@ const image = images[0].image;
       return;
     }
 
-    addToCartButton.disabled = true;
+    // addToCartButton.disabled = true;
 
-    CartCookiesClient.addItem({
+    const cart = CartCookiesClient.addItem({
       productId: productIdInput.value,
       size: size,
       quantity: quantity,
     });
 
+    itemsInCart.set(cart.length);
+    console.log(cart.length);
+
     // TODO: cambiar luego cuando tengamos los viewtransitions
-    window.location.href = '/cart';
+    // window.location.href = '/cart';
   });
 </script>
 
