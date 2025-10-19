@@ -7,7 +7,7 @@ export class CartCookiesClient {
     return cart;
   }
 
-  static addToCart(cartItem: CartItem): CartItem[] {
+  static addItem(cartItem: CartItem): CartItem[] {
     const cart = CartCookiesClient.getCart();
 
     const itemInCart = cart.find(
