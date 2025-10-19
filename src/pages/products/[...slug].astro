@@ -59,61 +59,63 @@ const image = images[0].image;
 </MainLayout>
 
 <script>
-  import type { CartItem } from '@/interfaces/cart-item';
   import { itemsInCart } from '@/store/cart.store';
   import { CartCookiesClient } from '@/utils/cart-cookies';
+  import { navigate } from 'astro:transitions/client';
 
-  const sizeElements = document.querySelectorAll(
-    'li[data-size]'
-  ) as NodeListOf<HTMLLIElement>;
+  document.addEventListener('astro:page-load', () => {
+    const sizeElements = document.querySelectorAll(
+      'li[data-size]'
+    ) as NodeListOf<HTMLLIElement>;
 
-  sizeElements.forEach((liElement) => {
-    liElement.addEventListener('click', () => {
-      sizeElements.forEach((s) => s.classList.remove('selected-size'));
-      liElement.classList.add('selected-size');
-    });
-  });
-
-  const quantityInput = document.querySelector('input') as HTMLInputElement;
-  const productIdInput = document.querySelector(
-    '#product-id'
-  ) as HTMLInputElement;
-
-  let quantity = 1;
-
-  const [decrementButton, incrementButton, addToCartButton] =
-    document.querySelectorAll('button');
-
-  decrementButton.addEventListener('click', () => {
-    quantity = Math.max(quantity - 1, 1);
-    quantityInput.value = quantity.toString();
-  });
-
-  incrementButton.addEventListener('click', () => {
-    quantity = Math.min(quantity + 1, 5);
-    quantityInput.value = quantity.toString();
-  });
-
-  addToCartButton.addEventListener('click', () => {
-    const size = document.querySelector('.selected-size')?.textContent;
-    if (!size) {
-      alert('Por favor, selecciona una talla.');
-      return;
-    }
-
-    // addToCartButton.disabled = true;
-
-    const cart = CartCookiesClient.addItem({
-      productId: productIdInput.value,
-      size: size,
-      quantity: quantity,
+    sizeElements.forEach((liElement) => {
+      liElement.addEventListener('click', () => {
+        sizeElements.forEach((s) => s.classList.remove('selected-size'));
+        liElement.classList.add('selected-size');
+      });
     });
 
-    itemsInCart.set(cart.length);
-    console.log(cart.length);
+    const quantityInput = document.querySelector('input') as HTMLInputElement;
+    const productIdInput = document.querySelector(
+      '#product-id'
+    ) as HTMLInputElement;
 
-    // TODO: cambiar luego cuando tengamos los viewtransitions
-    // window.location.href = '/cart';
+    let quantity = 1;
+
+    const [decrementButton, incrementButton, addToCartButton] =
+      document.querySelectorAll('button');
+
+    if (!incrementButton || !quantityInput) return;
+
+    decrementButton.addEventListener('click', () => {
+      quantity = Math.max(quantity - 1, 1);
+      quantityInput.value = quantity.toString();
+    });
+
+    incrementButton.addEventListener('click', () => {
+      quantity = Math.min(quantity + 1, 5);
+      quantityInput.value = quantity.toString();
+    });
+
+    addToCartButton.addEventListener('click', async () => {
+      const size = document.querySelector('.selected-size')?.textContent;
+      if (!size) {
+        alert('Por favor, selecciona una talla.');
+        return;
+      }
+
+      addToCartButton.disabled = true;
+
+      const cart = CartCookiesClient.addItem({
+        productId: productIdInput.value,
+        size: size,
+        quantity: quantity,
+      });
+
+      itemsInCart.set(cart.length);
+
+      await navigate('/cart');
+    });
   });
 </script>
 
