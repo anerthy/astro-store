@@ -47,10 +47,17 @@ export const getProductsByPage = defineAction({
       LIMIT ${limit} OFFSET ${(page - 1) * limit};
     `;
 
-    const { rows: products } = await db.run(productsQuery);
+    const { rows } = await db.run(productsQuery);
+
+    const products = rows.map((product) => {
+      return {
+        ...product,
+        images: product.images ? product.images : 'no-image.png',
+      };
+    }) as unknown as ProductWithImages[];
 
     return {
-      products: products as unknown as ProductWithImages[],
+      products: products,
       totalPages: totalPages,
     };
   },
