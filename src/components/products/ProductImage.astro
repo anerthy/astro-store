@@ -1,0 +1,15 @@
+---
+import { getUrlProductImage } from '@/utils/get-url-product-image';
+
+interface Props {
+  src: string;
+  alt: string;
+  className: string;
+}
+
+const { src, alt, className } = Astro.props;
+
+const currentImage = getUrlProductImage(src);
+---
+
+<img src={currentImage} alt={alt} class:list={[className]} />
