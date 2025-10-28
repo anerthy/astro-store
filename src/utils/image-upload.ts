@@ -18,4 +18,19 @@ export class ImageUpload {
 
     return response.secure_url;
   }
+
+  static async delete(image: string) {
+    try {
+      const imageName = image.split('/').pop() ?? ''; // get the last part of the url
+      const imageId = imageName.split('.')[0]; // remove the file extension
+
+      const result = await cloudinary.uploader.destroy(imageId);
+      console.log(result);
+
+      return true;
+    } catch (error) {
+      console.error('Error deleting image:', error);
+      return false;
+    }
+  }
 }
